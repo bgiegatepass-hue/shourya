@@ -1171,6 +1171,7 @@
   const EMAILJS_PUBLIC_KEY = "RMcDXVcYtFYAvmgtm";
   const EMAILJS_SERVICE_ID = "service_8vtxt7g";
   const EMAILJS_INCOMING_TEMPLATE_ID = "template_t4rx6bk";
+  const EMAILJS_NOTIFICATION_EMAIL = "shouryalakhera2609@gmail.com";
 
   if (EMAILJS_PUBLIC_KEY) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -1252,7 +1253,7 @@
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_INCOMING_TEMPLATE_ID, {
         from_name: fromName,
         from_email: fromEmail,
-        to_email: fromEmail,
+        to_email: EMAILJS_NOTIFICATION_EMAIL,
         subject: `Portfolio message from ${fromName}`,
         message: String(formData.get('message')).trim(),
         reply_url: replyUrl.toString()
@@ -1263,7 +1264,10 @@
       form.reset();
     } catch (err) {
       console.error('The contact message could not be sent:', err);
-      statusEl.textContent = 'Failed to send your message. Please try again later.';
+      const errorDetails = err && (err.text || err.message);
+      statusEl.textContent = errorDetails
+        ? `Failed to send your message: ${String(errorDetails).slice(0, 240)}`
+        : 'Failed to send your message. Please try again later.';
       statusEl.classList.add('error');
     } finally {
       submitBtn.disabled = false;
