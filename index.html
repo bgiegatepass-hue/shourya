@@ -1170,8 +1170,7 @@
   /* ============ EMAILJS CONFIG ============ */
   const EMAILJS_PUBLIC_KEY = "RMcDXVcYtFYAvmgtm";
   const EMAILJS_SERVICE_ID = "service_8vtxt7g";
-  const EMAILJS_INCOMING_TEMPLATE_ID = "template_g801tfj";
-  const EMAILJS_CLIENT_REPLY_TEMPLATE_ID = "template_vl3jkpb";
+  const EMAILJS_INCOMING_TEMPLATE_ID = "template_t4rx6bk";
 
   if (EMAILJS_PUBLIC_KEY) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -1226,13 +1225,14 @@
   const form = document.getElementById('contactForm');
   const statusEl = document.getElementById('formStatus');
   const submitBtn = document.getElementById('submitBtn');
+  const REPLY_PAGE_URL = 'https://shourya-tawny.vercel.app/reply.html';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     statusEl.textContent = '';
     statusEl.className = 'form-status';
 
-    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_INCOMING_TEMPLATE_ID || !EMAILJS_CLIENT_REPLY_TEMPLATE_ID) {
+    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_INCOMING_TEMPLATE_ID) {
       statusEl.textContent = 'Email service is not configured. Please try again later.';
       statusEl.classList.add('error');
       return;
@@ -1242,17 +1242,24 @@
     submitBtn.textContent = 'Sending...';
 
     try {
-      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_INCOMING_TEMPLATE_ID, form);
+      const formData = new FormData(form);
+      const fromName = String(formData.get('name')).trim();
+      const fromEmail = String(formData.get('email')).trim();
+      const replyUrl = new URL(REPLY_PAGE_URL);
+      replyUrl.searchParams.set('to_email', fromEmail);
+      replyUrl.searchParams.set('to_name', fromName);
 
-      try {
-        await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_CLIENT_REPLY_TEMPLATE_ID, form);
-        statusEl.textContent = 'Message sent successfully. A confirmation email has been sent.';
-        statusEl.classList.add('success');
-      } catch (replyError) {
-        console.error('Message sent, but the client reply email failed:', replyError);
-        statusEl.textContent = 'Your message was sent, but the confirmation email could not be sent.';
-        statusEl.classList.add('error');
-      }
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_INCOMING_TEMPLATE_ID, {
+        from_name: fromName,
+        from_email: fromEmail,
+        to_email: fromEmail,
+        subject: `Portfolio message from ${fromName}`,
+        message: String(formData.get('message')).trim(),
+        reply_url: replyUrl.toString()
+      });
+
+      statusEl.textContent = 'Message sent successfully. I will get back to you soon.';
+      statusEl.classList.add('success');
       form.reset();
     } catch (err) {
       console.error('The contact message could not be sent:', err);
