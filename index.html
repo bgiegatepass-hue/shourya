@@ -265,9 +265,8 @@
   .avatar-card {
     width: 100%;
     max-width: 340px;
-    aspect-ratio: 1;
+    aspect-ratio: 464 / 633;
     border-radius: 24px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(20, 184, 166, 0.1));
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -276,48 +275,19 @@
     overflow: hidden;
   }
 
-  .avatar-card::before {
-    content: '';
-    position: absolute;
-    inset: -50%;
-    background: conic-gradient(from 0deg, transparent, var(--accent), transparent 30%);
-    animation: rotate 6s linear infinite;
-  }
-
-  .avatar-card::after {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    background: var(--card);
-    border-radius: 22px;
-  }
-
   .avatar-inner {
-    position: relative;
+    position: absolute;
     z-index: 1;
-    text-align: center;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
   }
 
-  .avatar-inner .initials {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .avatar-inner .role {
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-  }
-
-  @keyframes rotate {
-    to { transform: rotate(360deg); }
+  .avatar-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
   }
 
   .floating-tag {
@@ -488,10 +458,51 @@
     color: var(--muted);
   }
 
+  .skill-list,
+  .project-features {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-list { margin-top: 1rem; }
+
+  .skill-list li,
+  .interest-list li {
+    padding: 0.35rem 0.7rem;
+    border-radius: 100px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .interests-card {
+    margin-top: 1.5rem;
+    padding: 1.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .interests-card h3 {
+    margin-bottom: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+  }
+
+  .interest-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
   /* PROJECTS */
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 1.5rem;
   }
 
@@ -511,29 +522,91 @@
     box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
   }
 
-  .project-thumb {
-    height: 170px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(20, 184, 166, 0.14), rgba(34, 211, 238, 0.12));
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .project-heading {
+    min-height: 130px;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(20, 184, 166, 0.08));
     border-bottom: 1px solid var(--border);
-    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .project-number {
+    display: block;
+    margin-bottom: 0.65rem;
+    color: var(--accent);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .project-heading h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .project-heading p {
+    margin-top: 0.35rem;
+    color: var(--muted);
+    font-size: 0.85rem;
   }
 
   .project-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
 
-  .project-body h3 {
-    font-size: 1.15rem;
+  .project-body h4 {
+    font-size: 0.85rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin: 0.75rem 0 0.5rem;
+    color: var(--text);
   }
 
   .project-body p {
     font-size: 0.9rem;
     color: var(--muted);
-    margin-bottom: 1rem;
-    flex: 1;
+  }
+
+  .project-features {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .project-features li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .project-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .project-meta {
+    margin-top: 0.9rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .project-link {
+    display: inline-flex;
+    margin-top: 0.9rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .project-link:hover {
+    color: var(--accent-3);
   }
 
   .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -711,7 +784,7 @@
   /* RESPONSIVE */
   @media (max-width: 900px) {
     .hero-container { grid-template-columns: 1fr; gap: 3rem; }
-    .hero-visual { order: -1; }
+    .hero-visual { order: 1; }
     .avatar-card { max-width: 260px; }
     .about-grid { grid-template-columns: 1fr; }
     .contact-wrap { grid-template-columns: 1fr; padding: 2rem; }
@@ -768,7 +841,7 @@
     <div class="hero-content">
       <div class="badge">
         <span class="dot"></span>
-        Available for opportunities
+        Building projects across web, mobile &amp; games
       </div>
       <h1>Hi, I'm <span class="gradient-text">Shourya Lakhera</span></h1>
       <p class="subtitle">
@@ -790,8 +863,11 @@
     <div class="hero-visual">
       <div class="avatar-card">
         <div class="avatar-inner">
-          <div class="initials">SL</div>
-          <div class="role">Developer</div>
+          <img
+            class="avatar-photo"
+            src="https://res.cloudinary.com/tpdc70nd/image/upload/e_background_removal/f_png/v1791110059/WhatsApp_Image_2026-10-04_at_3.18.44_PM.jpg"
+            alt="Shourya Lakhera"
+          />
         </div>
       </div>
       <div class="floating-tag tag-1">Web Dev</div>
@@ -812,30 +888,29 @@
       <div class="about-text reveal">
         <p>
           Hello! I'm <strong>Shourya Lakhera</strong>, a Data Science student passionate about
-          technology, software development, and building real-world solutions.
+          web and software development, game development, and building practical applications.
         </p>
         <p>
-          I have a keen interest in multiple domains of computing — from crafting responsive
-          websites and interactive games to analyzing data and developing software applications.
+          My work includes a digital campus gate-pass platform, Android applications, and 2D and 3D games.
+          I enjoy exploring technologies across web, mobile, databases, and game development.
         </p>
         <p>
-          I believe in <strong>learning by doing</strong>, which is why I constantly work on projects
-          that challenge me and expand my skill set. My goal is to grow into a well-rounded
-          software professional who can contribute meaningfully to impactful projects and teams.
+          I focus on <strong>learning by building</strong>, solving practical problems, and improving
+          my skills through real-world projects.
         </p>
       </div>
       <div class="stats-grid reveal">
         <div class="stat-card">
-          <div class="stat-num">4+</div>
-          <div class="stat-label">Domains Explored</div>
+          <div class="stat-num">05</div>
+          <div class="stat-label">Projects</div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Dedication</div>
+          <div class="stat-num">10</div>
+          <div class="stat-label">Areas of Interest</div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">24/7</div>
-          <div class="stat-label">Building &amp; Learning</div>
+          <div class="stat-num">03</div>
+          <div class="stat-label">Programming Languages</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">Bhopal</div>
@@ -851,55 +926,64 @@
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Skills</div>
-      <h2 class="section-title">What I work with</h2>
-      <p class="section-desc">A growing toolkit across multiple areas of technology.</p>
+      <h2 class="section-title">Skills &amp; Technologies</h2>
+      <p class="section-desc">Technologies and concepts I use and continue to develop.</p>
     </div>
     <div class="skills-grid">
       <div class="skill-card reveal">
-        <div class="skill-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-        </div>
+        <h3>Programming Languages</h3>
+        <ul class="skill-list">
+          <li>C++</li><li>Python</li><li>SQL</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
         <h3>Web Development</h3>
-        <p>HTML, CSS, JavaScript and modern frameworks for building responsive, fast websites.</p>
+        <ul class="skill-list">
+          <li>HTML5</li><li>CSS3</li><li>Responsive Web Design</li>
+          <li>Frontend Development</li><li>Backend Development Concepts</li>
+          <li>API Integration</li><li>Database Integration</li><li>Web Application Development</li>
+        </ul>
       </div>
       <div class="skill-card reveal">
-        <div class="skill-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="20" x2="18" y2="10"></line>
-            <line x1="12" y1="20" x2="12" y2="4"></line>
-            <line x1="6" y1="20" x2="6" y2="14"></line>
-          </svg>
-        </div>
-        <h3>Data Science</h3>
-        <p>Python, data analysis, visualization and machine learning fundamentals.</p>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="6" y1="11" x2="10" y2="11"></line>
-            <line x1="8" y1="9" x2="8" y2="13"></line>
-            <line x1="15" y1="12" x2="15.01" y2="12"></line>
-            <line x1="18" y1="10" x2="18.01" y2="10"></line>
-            <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path>
-          </svg>
-        </div>
-        <h3>Game Development</h3>
-        <p>Game logic, design principles and building interactive experiences.</p>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-        </div>
         <h3>Software Development</h3>
-        <p>Programming fundamentals, problem solving and version control with Git.</p>
+        <ul class="skill-list">
+          <li>Software Development</li><li>Application Development</li><li>Problem Solving</li>
+          <li>Database Management</li><li>API Concepts</li><li>Software Testing Concepts</li>
+          <li>Real-World Application Development</li>
+        </ul>
       </div>
+      <div class="skill-card reveal">
+        <h3>Game Development</h3>
+        <ul class="skill-list">
+          <li>Unity</li><li>GDevelop</li><li>C#</li><li>C++</li><li>2D Game Development</li>
+          <li>3D Game Development</li><li>Game UI</li><li>Player Controllers</li><li>Animation</li>
+          <li>Level Design</li><li>Mobile Game Development</li><li>Game Physics</li>
+          <li>Multiplayer Game Development Concepts</li><li>Networking</li><li>Netcode Fundamentals</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Database &amp; Backend</h3>
+        <ul class="skill-list">
+          <li>MongoDB</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Tools &amp; Technologies</h3>
+        <ul class="skill-list">
+          <li>Git</li><li>GitHub</li><li>Android Studio</li><li>Unity</li><li>GDevelop</li>
+          <li>Visual Studio</li><li>Visual Studio Code</li><li>Google Play Console</li>
+        </ul>
+      </div>
+    </div>
+    <div class="interests-card reveal">
+      <h3>Areas of Interest</h3>
+      <ul class="interest-list">
+        <li>Web Development</li><li>Software Development</li><li>Data Science</li>
+        <li>Game Development</li><li>Android Development</li><li>Application Development</li>
+        <li>Problem Solving</li><li>Database Technologies</li>
+        <li>Artificial Intelligence &amp; Machine Learning</li>
+        <li>Multiplayer Game Development</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -909,62 +993,110 @@
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Projects</div>
-      <h2 class="section-title">Things I've built</h2>
-      <p class="section-desc">A selection of projects from my learning journey.</p>
+      <h2 class="section-title">Projects I've Built</h2>
+      <p class="section-desc">Applications and games built across web, mobile, and game development.</p>
     </div>
     <div class="projects-grid">
       <div class="project-card reveal">
-        <div class="project-thumb">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
-          </svg>
+        <div class="project-heading">
+          <span class="project-number">01</span>
+          <h3>Project EPass</h3>
+          <p>Digital Campus Gate-Pass &amp; Automated Leave Management System</p>
         </div>
         <div class="project-body">
-          <h3>Project One</h3>
-          <p>Short description of your project — what it does and the problem it solves.</p>
-          <div class="tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-          </div>
+          <p>A smart digital platform designed to modernize campus gate-pass and leave management processes.</p>
+          <h4>Key Features</h4>
+          <ul class="project-features">
+            <li>Student and faculty leave management</li>
+            <li>Digital gate-pass generation with QR-code verification</li>
+            <li>HOD, faculty, and management approval workflow</li>
+            <li>Student location verification and records</li>
+            <li>Real-time entry/exit monitoring</li>
+            <li>Admin dashboard, digital leave and gate-pass history</li>
+            <li>Reports, audit logs, and role-based access</li>
+            <li>Paperless approval process</li>
+          </ul>
+          <h4>Business Model</h4>
+          <ul class="project-features">
+            <li>Zero initial software license cost</li>
+            <li>Zero initial implementation cost</li>
+            <li>20% revenue share for participating institutions</li>
+          </ul>
         </div>
       </div>
       <div class="project-card reveal">
-        <div class="project-thumb">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-          </svg>
+        <div class="project-heading">
+          <span class="project-number">02</span>
+          <h3>Ninja Fight</h3>
+          <p>2D Fighting &amp; Action Game</p>
         </div>
         <div class="project-body">
-          <h3>Project Two</h3>
-          <p>Short description of your project — what it does and the problem it solves.</p>
-          <div class="tags">
-            <span class="tag">Python</span>
-            <span class="tag">Pandas</span>
-          </div>
+          <p>A 2D action-fighting mobile game developed using the GDevelop Game Engine.</p>
+          <h4>Key Features</h4>
+          <ul class="project-features">
+            <li>Ninja fighting gameplay, player movement, and jump mechanics</li>
+            <li>Attack and combat mechanics with enemy battles</li>
+            <li>Level-based gameplay and mobile touch controls</li>
+            <li>2D animations and game UI</li>
+          </ul>
+          <div class="project-meta"><strong>Technology:</strong> GDevelop &nbsp;|&nbsp; <strong>Platform:</strong> Android &nbsp;|&nbsp; Published mobile game</div>
+          <a class="project-link" href="https://play.google.com/store/apps/details?id=com.shourya.ninjafight" target="_blank" rel="noopener noreferrer">Play on Google Play &rarr;</a>
         </div>
       </div>
       <div class="project-card reveal">
-        <div class="project-thumb">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="6" y1="11" x2="10" y2="11"></line>
-            <line x1="8" y1="9" x2="8" y2="13"></line>
-            <line x1="15" y1="12" x2="15.01" y2="12"></line>
-            <line x1="18" y1="10" x2="18.01" y2="10"></line>
-            <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path>
-          </svg>
+        <div class="project-heading">
+          <span class="project-number">03</span>
+          <h3>Zombie: The Risk of Survival</h3>
+          <p>3D Zombie Survival Game</p>
         </div>
         <div class="project-body">
-          <h3>Project Three</h3>
-          <p>Short description of your project — what it does and the problem it solves.</p>
-          <div class="tags">
-            <span class="tag">Game Dev</span>
-            <span class="tag">Design</span>
-          </div>
+          <p>A 3D zombie survival game developed using the Unity Game Engine.</p>
+          <h4>Key Features</h4>
+          <ul class="project-features">
+            <li>3D zombie environment and zombie enemies</li>
+            <li>Survival gameplay, combat mechanics, and survival challenges</li>
+            <li>Player movement and enemy interaction</li>
+            <li>3D game mechanics and interactive environment</li>
+            <li>Game UI</li>
+          </ul>
+          <div class="project-meta"><strong>Technology:</strong> Unity &nbsp;|&nbsp; <strong>Platform:</strong> Web &nbsp;|&nbsp; Published game project on itch.io</div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-heading">
+          <span class="project-number">04</span>
+          <h3>Car Racing Game</h3>
+          <p>Unity-Based Car Racing Game</p>
+        </div>
+        <div class="project-body">
+          <p>A car racing game developed using the Unity Game Engine.</p>
+          <h4>Key Features</h4>
+          <ul class="project-features">
+            <li>Car movement and controls</li>
+            <li>Racing mechanics and track environment</li>
+            <li>Camera system and game UI</li>
+            <li>Gameplay physics and vehicle control</li>
+          </ul>
+          <div class="project-meta"><strong>Technology:</strong> Unity &nbsp;|&nbsp; Racing game</div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-heading">
+          <span class="project-number">05</span>
+          <h3>Android WebView Application</h3>
+          <p>Web Platform Integrated Android Application</p>
+        </div>
+        <div class="project-body">
+          <p>An Android application built with Android Studio and WebView to integrate a web-based platform into a native Android app.</p>
+          <h4>Key Features</h4>
+          <ul class="project-features">
+            <li>WebView integration and web-to-app functionality</li>
+            <li>Android back navigation</li>
+            <li>Location permission handling</li>
+            <li>Android permission management</li>
+            <li>Native Android functionality</li>
+          </ul>
+          <div class="project-meta"><strong>Technology:</strong> Android Studio, WebView, Android</div>
         </div>
       </div>
     </div>
@@ -982,7 +1114,7 @@
     <div class="contact-wrap reveal">
       <div class="contact-info">
         <h3>Get in touch</h3>
-        <p>I'm open to internships, freelance work, and collaborative projects.</p>
+        <p>For questions or project inquiries, send me a message using the form.</p>
         <div class="contact-item">
           <div class="ico">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -995,20 +1127,11 @@
         <div class="contact-item">
           <div class="ico">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </div>
-          <span>your.email@example.com</span>
-        </div>
-        <div class="contact-item">
-          <div class="ico">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </div>
-          <span>Available for opportunities</span>
+          <span>Contact form available</span>
         </div>
       </div>
 
@@ -1040,42 +1163,15 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="socials">
-    <a href="#" title="GitHub" aria-label="GitHub">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.24-.02-2.25-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.57 22.29 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"/>
-      </svg>
-    </a>
-    <a href="#" title="LinkedIn" aria-label="LinkedIn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
-      </svg>
-    </a>
-    <a href="#" title="Twitter" aria-label="Twitter">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/>
-      </svg>
-    </a>
-    <a href="mailto:your.email@example.com" title="Email" aria-label="Email">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-        <polyline points="22,6 12,13 2,6"></polyline>
-      </svg>
-    </a>
-  </div>
   <p>&copy; <span id="year"></span> Shourya Lakhera. Built with care from Bhopal.</p>
 </footer>
 
 <script>
-  /* ============ EMAILJS CONFIG ============
-     Fill these later:
-     1. Create account at https://www.emailjs.com/
-     2. Copy Public Key, Service ID, Template ID
-     3. Paste below
-  ========================================= */
-  const EMAILJS_PUBLIC_KEY  = "";
-  const EMAILJS_SERVICE_ID  = "";
-  const EMAILJS_TEMPLATE_ID = "";
+  /* ============ EMAILJS CONFIG ============ */
+  const EMAILJS_PUBLIC_KEY = "RMcDXVcYtFYAvmgtm";
+  const EMAILJS_SERVICE_ID = "service_8vtxt7g";
+  const EMAILJS_INCOMING_TEMPLATE_ID = "template_vl3jkpb";
+  const EMAILJS_CLIENT_REPLY_TEMPLATE_ID = "template_g801tfj";
 
   if (EMAILJS_PUBLIC_KEY) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -1136,8 +1232,8 @@
     statusEl.textContent = '';
     statusEl.className = 'form-status';
 
-    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
-      statusEl.textContent = 'EmailJS config missing. Please add your keys in the script.';
+    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_INCOMING_TEMPLATE_ID || !EMAILJS_CLIENT_REPLY_TEMPLATE_ID) {
+      statusEl.textContent = 'Email service is not configured. Please try again later.';
       statusEl.classList.add('error');
       return;
     }
@@ -1146,13 +1242,21 @@
     submitBtn.textContent = 'Sending...';
 
     try {
-      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
-      statusEl.textContent = 'Message sent successfully. I will get back to you soon.';
-      statusEl.classList.add('success');
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_INCOMING_TEMPLATE_ID, form);
+
+      try {
+        await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_CLIENT_REPLY_TEMPLATE_ID, form);
+        statusEl.textContent = 'Message sent successfully. A confirmation email has been sent.';
+        statusEl.classList.add('success');
+      } catch (replyError) {
+        console.error('Message sent, but the client reply email failed:', replyError);
+        statusEl.textContent = 'Your message was sent, but the confirmation email could not be sent.';
+        statusEl.classList.add('error');
+      }
       form.reset();
     } catch (err) {
-      console.error(err);
-      statusEl.textContent = 'Failed to send. Please try again later.';
+      console.error('The contact message could not be sent:', err);
+      statusEl.textContent = 'Failed to send your message. Please try again later.';
       statusEl.classList.add('error');
     } finally {
       submitBtn.disabled = false;
