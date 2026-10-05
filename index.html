@@ -776,6 +776,53 @@
     transform: translateY(0);
   }
 
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(16, 185, 129, 0.65);
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.08);
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    will-change: transform;
+  }
+
+  .custom-cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 10px var(--accent);
+    transform: translate(-50%, -50%);
+  }
+
+  .custom-cursor.is-visible { opacity: 1; }
+
+  .custom-cursor.is-hovering {
+    width: 44px;
+    height: 44px;
+    border-color: rgba(20, 184, 166, 0.9);
+    background: rgba(20, 184, 166, 0.14);
+  }
+
+  .custom-cursor.is-pressed { transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(0.82); }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    body,
+    body * { cursor: none !important; }
+  }
+
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -815,6 +862,7 @@
 </style>
 </head>
 <body>
+<div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
 
 <!-- NAVBAR -->
 <nav id="navbar">
@@ -1022,6 +1070,7 @@
             <li>Zero initial implementation cost</li>
             <li>20% revenue share for participating institutions</li>
           </ul>
+          <a class="btn btn-primary" style="align-self: flex-start; margin-top: 1.25rem;" href="https://e-gatepass-eight.vercel.app/" target="_blank" rel="noopener noreferrer">View My Live Project &rarr;</a>
         </div>
       </div>
       <div class="project-card reveal">
@@ -1180,6 +1229,43 @@
   const EMAILJS_SERVICE_ID = "service_8vtxt7g";
   const EMAILJS_INCOMING_TEMPLATE_ID = "template_vl3jkpb";
   const EMAILJS_NOTIFICATION_EMAIL = "shouryalakhera2609@gmail.com";
+
+  /* ============ THEME CURSOR ============ */
+  const customCursor = document.getElementById('customCursor');
+  const canUseCustomCursor = window.matchMedia(
+    '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
+  ).matches;
+
+  if (canUseCustomCursor) {
+    let cursorX = 0;
+    let cursorY = 0;
+    let cursorFrame = null;
+
+    document.addEventListener('pointermove', (event) => {
+      cursorX = event.clientX;
+      cursorY = event.clientY;
+
+      if (cursorFrame === null) {
+        cursorFrame = requestAnimationFrame(() => {
+          customCursor.style.setProperty('--cursor-x', `${cursorX}px`);
+          customCursor.style.setProperty('--cursor-y', `${cursorY}px`);
+          customCursor.classList.add('is-visible');
+          cursorFrame = null;
+        });
+      }
+
+      const target = event.target instanceof Element ? event.target : null;
+      customCursor.classList.toggle(
+        'is-hovering',
+        Boolean(target && target.closest('a, button, input, textarea, select, [role="button"]'))
+      );
+    });
+
+    document.addEventListener('pointerdown', () => customCursor.classList.add('is-pressed'));
+    document.addEventListener('pointerup', () => customCursor.classList.remove('is-pressed'));
+    document.addEventListener('pointerleave', () => customCursor.classList.remove('is-visible'));
+    document.addEventListener('pointerenter', () => customCursor.classList.add('is-visible'));
+  }
 
   if (EMAILJS_PUBLIC_KEY) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
