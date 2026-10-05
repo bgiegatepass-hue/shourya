@@ -1345,8 +1345,11 @@
       replyUrl.searchParams.set('to_name', fromName);
 
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_INCOMING_TEMPLATE_ID, {
+        name: fromName,
+        email: fromEmail,
         from_name: fromName,
         from_email: fromEmail,
+        reply_to: fromEmail,
         to_email: EMAILJS_NOTIFICATION_EMAIL,
         subject: `Portfolio message from ${fromName}`,
         message: String(formData.get('message')).trim(),
